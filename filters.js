@@ -15,7 +15,7 @@ $(document).ready(function() {
          modal: true,
          autoOpen: false,
          open: function() {
-       		 $('.ui-widget-overlay').addClass('custom-overlay').bind('click', function() { $("#dialog-modal").dialog('close'); });
+       		$('.ui-widget-overlay').addClass('custom-overlay').bind('click', function() { $("#dialog-modal").dialog('close'); });
          },
          close: function() {
                 $('.ui-widget-overlay').removeClass('custom-overlay');
@@ -47,74 +47,77 @@ $(document).ready(function() {
          var required = my_vendor.split('=');
          ven_id = required[1];
          displayProductsByVendor(ven_id);
-     }
+    }
     
-    function displayProductsByCategory(id){
+function displayProductsByCategory(id){
         highlightCategory(id);
         var url = 'http://www.***.com/workoutSupplements/servlet/FilterSupplements';
         var data={catIds : id}
         $.get(url,data,handleProducts);
-    }
+}
     
-    function highlightCategory(id){
+function highlightCategory(id){
         $("input[name='category']").each(function() {
             if($.trim($(this).val())==$.trim(id)){
 			this.checked=true;
             }
         });
-    }
+}
     
-     function displayProductsByVendor(id){
+function displayProductsByVendor(id){
          var url = 'http://www.***.com/workoutSupplements/servlet/FilterSupplements';
          var data={venIds : id}
          $.get(url,data,handleProducts);
          highlightVendor(id);
-     }
+}
     
-    function highlightVendor(name){
+function highlightVendor(name){
         $("input[name='vendor']").each(function() {
             if($.trim($(this).val())==$.trim(name)){
 			this.checked=true;
             }
         });
-    }                           
+}                           
     
-    function handleVendor(response) {
+function handleVendor(response) {
         var items = response.split('||');
         var vendorHandle = $('#vendorList');
         for(var i=0; i < items.length; i++) {
             var pairs = items[i].split('='); 
             vendorHandle.append( "<input type='checkbox' class='filterCheckbox' id='ven"+pairs[0]+"' name='vendor' value='"+pairs[0]+"'/><label>"+pairs[1]+"</label> <br />");  attachFilterHandler("ven"+pairs[0]);
-        }
-    }
+	}
+}
 	
-	function filterProducts() {
-        selectedVendors  = new Array();
+function filterProducts() {
+	selectedVendors  = new Array();
         selectedCategories  = new Array();
-		    selectedVendors.splice(0, selectedVendors.length);
-		    selectedCategories.splice(0, selectedCategories.length);
+	selectedVendors.splice(0, selectedVendors.length);
+	selectedCategories.splice(0, selectedCategories.length);
+	
         $("input[name='vendor']:checked").each(function() {
             selectedVendors.push($(this).val());
-		});
+	});
 		
-		$("input[name='category']:checked").each(function() {
+	$("input[name='category']:checked").each(function() {
             selectedCategories.push($(this).val());
-		});
-		var price_Upper = null;
-		var price_Lower = null;
-		if ($("input[name='price']:checked").val()) {
-                   var price = $("input[name='price']:checked").val().split("-");
-        	    price_Lower = price[0];
-		    price_Upper = price[1];
+	});
+		
+	var price_Upper = null;
+	var price_Lower = null;
+	if ($("input[name='price']:checked").val()) {
+		var price = $("input[name='price']:checked").val().split("-");
+        	price_Lower = price[0];
+		price_Upper = price[1];
         }
-		var url = 'http://www.***.com/workoutSupplements/servlet/FilterSupplements';
+		
+	var url = 'http://www.***.com/workoutSupplements/servlet/FilterSupplements';
         var data={venIds : selectedVendors.join(","), catIds:selectedCategories.join(","), priceUpper : price_Upper, priceLower : price_Lower}
         $.get(url,data,  handleProducts);
-    }
+}
     
-    $("input[name='price']").on('click', function(){
-        filterProducts();
-    });
+$("input[name='price']").on('click', function(){
+	filterProducts();
+});
 	
 function attachFilterHandler(id){
     $('#'+id).on('change', function(){
@@ -127,7 +130,7 @@ function handleCategory(response) {
     var categoryHandle = $('#categoryList');
     for(var i=0; i < items.length; i++) {
         var pairs = items[i].split('='); 
-	      categoryHandle.append( "<input type='checkbox' class='filterCheckbox' id='cat"+pairs[0]+"' name='category' value='"+pairs[0]+"'/><label>"+pairs[1]+"</label> <br />");    
+	categoryHandle.append( "<input type='checkbox' class='filterCheckbox' id='cat"+pairs[0]+"' name='category' value='"+pairs[0]+"'/><label>"+pairs[1]+"</label> <br />");    
         attachFilterHandler("cat"+pairs[0]);
     }
 }
@@ -137,15 +140,15 @@ function attachCategoryHandler(id){
         selectedVendors  = new Array();
         selectedCategories  = new Array();
         selectedVendors.splice(0, selectedVendors.length);
-		    selectedCategories.splice(0, selectedCategories.length);
+	selectedCategories.splice(0, selectedCategories.length);
 		
-		$("input[name='vendor']:checked").each(function() {
+	$("input[name='vendor']:checked").each(function() {
             selectedVendors.push($(this).val());
-		});
+	});
 		
-		$("input[name='category']:checked").each(function() {
+	$("input[name='category']:checked").each(function() {
             selectedCategories.push($(this).val());
-		});
+	});
         
         var url = 'http://www.***.com/workoutSupplements/servlet/FilterSupplements';
         var data={venIds : selectedVendors.join(","), catIds:selectedCategories.join(",")}
@@ -180,10 +183,10 @@ function viewAllItems(product_data){
     var tmpString = "<div class='contentInfo'></div>";
     for(var i=0; i < product_data.length; i++) {
         tmpString += "<div class='item'>";
-		    tmpString += "<div class='prodImg'>";
-		    tmpString += "<div id='img_"+product_data[i][6]+"'>";
-		    tmpString += "<img src=\"/~workoutSupplements/onlineStore/images/" +(product_data[i][6]).toUpperCase()+"\" alt=\""+product_data[i][6]+"\""+" width=\"150px\" height='200px'  /></div>";
-		    tmpString += "</div>";
+	tmpString += "<div class='prodImg'>";
+	tmpString += "<div id='img_"+product_data[i][6]+"'>";
+	tmpString += "<img src=\"/~workoutSupplements/onlineStore/images/" +(product_data[i][6]).toUpperCase()+"\" alt=\""+product_data[i][6]+"\""+" width=\"150px\" height='200px'  /></div>";
+	tmpString += "</div>";
         tmpString += "<p style='font-size:1.5em;text-align:center'><strong>"+ product_data[i][2] + "</strong></p>";
         tmpString += "<p style='text-align:center'><strong>$"+product_data[i][5]+ "</strong></p>"; 
         
@@ -206,14 +209,14 @@ function viewAllItems(product_data){
 
 //Send the customer to the shopping page after the "Start Shopping!" button is clicked    
 function attachAddHandler(id){
- 	$('#'+id).on('click',function(){
+	$('#'+id).on('click',function(){
         window.location="http://www.***.com/workoutSupplements/servlet/AllSupplements";
-    });
+	});
  }
  
 //Send the customer to the shopping page after the image of the supplement is clicked    
 function attachImgHandler(id, product_data){
-    $('#'+id).on('click',function(){
+    	$('#'+id).on('click',function(){
         window.location="http://www.***.com/workoutSupplements/servlet/AllSupplements";
 	});
  } 
